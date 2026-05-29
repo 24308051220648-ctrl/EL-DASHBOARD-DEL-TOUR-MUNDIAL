@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M72 World Tour Dashboard ⚡</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Estilos para homogeneizar la barra de desplazamiento interna del inventario */
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #18181b; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #ef4444; }
+  </style>
+</head>
+<body class="bg-black text-white min-h-screen font-sans p-6 lg:p-12">
+
+  <header class="text-center max-w-2xl mx-auto border-b border-zinc-800 pb-6 mb-10">
+    <h1 class="text-4xl md:text-5xl font-black tracking-tighter text-red-600 uppercase">⚡ MASTER OF PUPPETS ⚡</h1>
+    <p class="text-zinc-400 text-xs md:text-sm mt-2 tracking-widest uppercase">M72 World Tour • Panel de Control Global</p>
+  </header>
+
+  <main class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto items-start">
+
+    <section id="vip-ticket-module" class="bg-zinc-900 text-white p-6 rounded-xl shadow-2xl border border-red-600 h-full flex flex-col justify-between">
+      <div>
+        <h2 class="text-xl font-black text-red-500 uppercase tracking-widest mb-6 border-b border-zinc-800 pb-2">🎟️ 01. TAQUILLA VIP</h2>
+        
+        <form id="ticket-form" class="space-y-5">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Nombre en el Gafete VIP</label>
+            <input type="text" id="vip-name" class="w-full bg-zinc-800 border border-zinc-700 rounded p-2 focus:outline-none focus:border-red-500 text-white font-mono text-sm" placeholder="Ej: James Hetfield">
+            <span id="char-counter" class="text-xs text-zinc-500 block mt-1 font-mono">0/20 caracteres</span>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Zona del Estadio</label>
+            <select id="zone-select" class="w-full bg-zinc-800 border border-zinc-700 rounded p-2 focus:outline-none focus:border-red-500 text-white font-mono text-sm">
+              <option value="0">-- Selecciona Zona --</option>
+              <option value="100">General ($100)</option>
+              <option value="150">Gradas ($150)</option>
+              <option value="500">Snake Pit VIP ($500)</option>
+            </select>
+          </div>
+
+          <div class="bg-zinc-950 p-4 rounded border border-zinc-800 text-center my-4">
+            <span class="text-xs text-zinc-400 block uppercase font-bold tracking-wider">Total a Pagar</span>
+            <span id="total-price" class="text-3xl font-black text-green-400 tracking-tight">$0</span>
+          </div>
+        </form>
+      </div>
+
+      <button type="submit" form="ticket-form" class="w-full mt-4 bg-red-600 hover:bg-red-700 text-white font-black py-3 rounded uppercase tracking-wider transition-colors duration-200 shadow-lg shadow-red-900/50 text-sm">
+        CONFIRMAR COMPRA
+      </button>
+    </section>
+
+    <section id="kirk-soundboard-module" class="bg-zinc-900 text-white p-6 rounded-xl shadow-2xl border border-yellow-500 h-full flex flex-col justify-between">
+      <div>
+        <h2 class="text-xl font-black text-yellow-500 uppercase tracking-widest mb-6 border-b border-zinc-800 pb-2">🎛️ 02. SOUNDBOARD FX</h2>
+        
+        <div class="bg-black p-3 rounded mb-5 text-center border border-zinc-800">
+          <p id="sound-display" class="font-mono text-xs text-yellow-400 tracking-widest uppercase truncate">Consola Lista - Esperando Señal</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mb-6">
+          <button class="sound-btn bg-zinc-800 border-b-4 border-zinc-950 p-3 font-bold rounded active:scale-95 transition-all uppercase text-xs flex flex-col items-center justify-center gap-1" data-effect="Riff de Guitarra"><span>🎸</span> Riff Guitarra</button>
+          <button class="sound-btn bg-zinc-800 border-b-4 border-zinc-950 p-3 font-bold rounded active:scale-95 transition-all uppercase text-xs flex flex-col items-center justify-center gap-1" data-effect="Doble Bombo"><span>🥁</span> Doble Bombo</button>
+          <button class="sound-btn bg-zinc-800 border-b-4 border-zinc-950 p-3 font-bold rounded active:scale-95 transition-all uppercase text-xs flex flex-col items-center justify-center gap-1" data-effect="Grito del Público"><span>🗣️</span> Público</button>
+          <button class="sound-btn bg-zinc-800 border-b-4 border-zinc-950 p-3 font-bold rounded active:scale-95 transition-all uppercase text-xs flex flex-col items-center justify-center gap-1" data-effect="Fuego"><span>🔥</span> Fuego</button>
+        </div>
+      </div>
+
+      <div class="space-y-2 pt-2 border-t border-zinc-800">
+        <div class="flex justify-between text-xs font-bold uppercase tracking-wider text-zinc-400">
+          <span>Pedal de Distorsión</span>
+          <span id="distortion-value" class="text-yellow-500 font-mono">0%</span>
+        </div>
+        <input type="range" id="distortion-slider" min="0" max="100" value="0" class="w-full accent-yellow-500 bg-zinc-800 h-2 rounded-lg appearance-none cursor-pointer">
+      </div>
+    </section>
+
+    <section id="stage-manager-inventory" class="bg-zinc-900 text-white p-6 rounded-xl shadow-2xl border border-green-500 h-full flex flex-col justify-between">
+      <div>
+        <h2 class="text-xl font-black text-green-500 uppercase tracking-widest mb-6 border-b border-zinc-800 pb-2">📦 03. SEEK & DESTROY</h2>
+        
+        <div class="mb-4">
+          <input type="text" id="search-box" class="w-full bg-zinc-800 border border-zinc-700 rounded p-2 focus:outline-none focus:border-green-500 text-white text-sm font-mono" placeholder="🔍 Filtrar equipamiento...">
+        </div>
+
+        <ul id="inventory-list" class="space-y-2 max-h-64 overflow-y-auto pr-1 custom-scrollbar">
+          <li class="bg-zinc-800 p-2 rounded cursor-pointer hover:bg-zinc-700 transition-colors uppercase font-mono text-xs border-l-4 border-transparent">Amplificador Marshall JCM800</li>
+          <li class="bg-zinc-800 p-2 rounded cursor-pointer hover:bg-zinc-700 transition-colors uppercase font-mono text-xs border-l-4 border-transparent">Batería Tama Lars Signature</li>
+          <li class="bg-zinc-800 p-2 rounded cursor-pointer hover:bg-zinc-700 transition-colors uppercase font-mono text-xs border-l-4 border-transparent">Bajo ESP Stream-204</li>
+          <li class="bg-zinc-800 p-2 rounded cursor-pointer hover:bg-zinc-700 transition-colors uppercase font-mono text-xs border-l-4 border-transparent">Cables XLR Mogami 10m</li>
+          <li class="bg-zinc-800 p-2 rounded cursor-pointer hover:bg-zinc-700 transition-colors uppercase font-mono text-xs border-l-4 border-transparent">Pirotecnia Cajas Magnesio</li>
+          <li class="bg-zinc-800 p-2 rounded cursor-pointer hover:bg-zinc-700 transition-colors uppercase font-mono text-xs border-l-4 border-transparent">Púas Nitrato M.O.P.</li>
+          <li class="bg-zinc-800 p-2 rounded cursor-pointer hover:bg-zinc-700 transition-colors uppercase font-mono text-xs border-l-4 border-transparent">Monitores In-Ear Shure</li>
+          <li class="bg-zinc-800 p-2 rounded cursor-pointer hover:bg-zinc-700 transition-colors uppercase font-mono text-xs border-l-4 border-transparent">Micrófono Shure Super 55</li>
+          <li class="bg-zinc-800 p-2 rounded cursor-pointer hover:bg-zinc-700 transition-colors uppercase font-mono text-xs border-l-4 border-transparent">Consola Digital Midas HD96</li>
+          <li class="bg-zinc-800 p-2 rounded cursor-pointer hover:bg-zinc-700 transition-colors uppercase font-mono text-xs border-l-4 border-transparent">Rack Efectos Fractal Audio</li>
+        </ul>
+      </div>
+      
+      <div class="text-[10px] text-zinc-500 uppercase font-mono mt-4 pt-2 border-t border-zinc-800 tracking-wider">
+        * Haz click en un ítem para cargarlo al camión.
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // --- LÓGICA ETAPA 1: TAQUILLA ---
+    const vipNameInput = document.getElementById('vip-name');
+    const charCounter = document.getElementById('char-counter');
+    const zoneSelect = document.getElementById('zone-select');
+    const totalPriceSpan = document.getElementById('total-price');
+    const ticketForm = document.getElementById('ticket-form');
+
+    vipNameInput.addEventListener('input', () => {
+      const len = vipNameInput.value.length;
+      charCounter.textContent = `${len}/20 caracteres`;
+      if (len > 20) {
+        charCounter.classList.add('text-red-500', 'font-bold');
+      } else {
+        charCounter.classList.remove('text-red-500', 'font-bold');
+      }
+    });
+
+    zoneSelect.addEventListener('change', () => {
+      totalPriceSpan.textContent = `$${zoneSelect.value}`;
+    });
+
+    ticketForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (vipNameInput.value.trim() === '') {
+        alert('❌ ¡ERROR: El campo del nombre no puede estar vacío!');
+      } else if (vipNameInput.value.length > 20) {
+        alert('❌ ¡ERROR: El nombre no puede tener más de 20 caracteres!');
+      } else if (zoneSelect.value === '0') {
+        alert('❌ ¡ERROR: Selecciona una zona válida del estadio!');
+      } else {
+        alert(`🤘 ¡COMPRA CONFIRMADA! Registro exitoso para: ${vipNameInput.value}.`);
+      }
+    });
+
+    // --- LÓGICA ETAPA 2: SOUNDBOARD ---
+    const soundButtons = document.querySelectorAll('.sound-btn');
+    const soundDisplay = document.getElementById('sound-display');
+    const distortionSlider = document.getElementById('distortion-slider');
+    const distortionValue = document.getElementById('distortion-value');
+
+    soundButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        soundButtons.forEach(b => b.classList.remove('bg-yellow-400', 'text-black'));
+        btn.classList.add('bg-yellow-400', 'text-black');
+        soundDisplay.textContent = `⚡ Reproduciendo: [${btn.getAttribute('data-effect')}]`;
+      });
+    });
+
+    distortionSlider.addEventListener('input', () => {
+      distortionValue.textContent = `${distortionSlider.value}%`;
+    });
+
+    // --- LÓGICA ETAPA 3: INVENTARIO ---
+    const searchBox = document.getElementById('search-box');
+    const inventoryItems = document.querySelectorAll('#inventory-list li');
+
+    searchBox.addEventListener('input', () => {
+      const filterText = searchBox.value.toLowerCase().trim();
+      inventoryItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(filterText) ? "" : "none";
+      });
+    });
+
+    inventoryItems.forEach(item => {
+      item.addEventListener('click', () => {
+        item.classList.toggle('text-green-500');
+        item.classList.toggle('line-through');
+        item.classList.toggle('border-green-500');
+      });
+    });
+  </script>
+</body>
+</html>
